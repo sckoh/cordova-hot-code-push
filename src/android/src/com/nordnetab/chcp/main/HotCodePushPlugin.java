@@ -71,6 +71,8 @@ public class HotCodePushPlugin extends CordovaPlugin {
 
     private Handler handler;
     private boolean isPluginReadyForWork;
+    
+    private boolean isLocalStorageIndexPageLoadedOnStart = false;
 
     // region Plugin lifecycle
 
@@ -111,8 +113,11 @@ public class HotCodePushPlugin extends CordovaPlugin {
             installWwwFolder();
             return;
         }
-
-        redirectToLocalStorageIndexPage();
+        
+        if (!isLocalStorageIndexPageLoadedOnStart) {
+            redirectToLocalStorageIndexPage();
+            isLocalStorageIndexPageLoadedOnStart = true;
+        }
 
         // install update if there is anything to install
         if (chcpXmlConfig.isAutoInstallIsAllowed() &&
